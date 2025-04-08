@@ -16,7 +16,16 @@
             <ul>
                 <li><a href="/">Accueil</a></li>
                 <li>Produits</li>
-                <li>{% block authStatus %}<a href="/register">Inscription</a>{% endblock %}</li>
+
+                {% if app.user %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li><a href="{{ path('app_admin') }}">Tableau de bord</a></li>
+                    {% endif %}
+                    <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
+                {% else %}
+                    <li><a href="{{ path('app_register') }}">Inscription</a></li>
+                    <li><a href="{{ path('app_login') }}">Connexion</a></li>
+                {% endif %}
             </ul>
         </nav>
         {% block body %}{% endblock %}
