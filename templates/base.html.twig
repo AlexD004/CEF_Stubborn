@@ -14,9 +14,9 @@
     <body>
         <nav>
             <ul>
-                <li>Accueil</li>
+                <li><a href="/">Accueil</a></li>
                 <li>Produits</li>
-                <li>{% block authStatus %}Inscription{% endblock %}</li>
+                <li>{% block authStatus %}<a href="/register">Inscription</a>{% endblock %}</li>
             </ul>
         </nav>
         {% block body %}{% endblock %}
