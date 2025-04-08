@@ -2,10 +2,14 @@
 
 namespace App\Controller;
 
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 //use Symfony\Component\Security\Core\Security;
+
+use App\Entity\User;
+use App\Form\RegisterType;
 
 final class MainController extends AbstractController
 {
@@ -24,12 +28,6 @@ final class MainController extends AbstractController
         return $this->render('home.html.twig');
     }
 
-    #[Route('/register', name: 'register')]
-    public function register(): Response
-    {
-        return $this->render('auth/register.html.twig');
-    }
-
     #[Route('/login', name: 'login')]
     public function login(): Response
     {
@@ -40,11 +38,5 @@ final class MainController extends AbstractController
     public function dashboard(): Response
     {
         return $this->render('dashboard.html.twig');
-    }
-
-    #[Route('/{slug}', name: 'not_found', requirements: ['slug' => '.*'])]
-    public function notFound(): Response
-    {
-        return new Response($this->renderView('errors/404.html.twig'), Response::HTTP_NOT_FOUND);
     }
 }

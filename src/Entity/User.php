@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -20,6 +21,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $name = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\Email(message: "L'email n'est pas valide.")]
+    #[Assert\Unique]
     private ?string $email = null;
 
     /**
@@ -32,10 +35,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\Length(
+        min: 6,
+        max: 250,
+        minMessage: "Le mot de passe doit faire au moins {{ limit }} caractères.",
+        maxMessage: "Le mot de passe ne peut pas excéder {{ limit }} caractères."
+    )]
     private ?string $password = null;
 
     #[ORM\Column(type: 'text')]
-    private ?string $deliveyAddress = null;
+    private ?string $deliveryAddress = null;
 
     public function getId(): ?int {
         return $this->id;
@@ -102,8 +111,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getDeliveyAddress(): ?string { return $this->deliveyAddress; }
-    public function setDeliveyAddress(string $deliveyAddress): static { $this->deliveyAddress = $deliveyAddress; return $this; }
+    public function getDeliveryAddress(): ?string { return $this->deliveryAddress; }
+    public function setDeliveryAddress(string $deliveryAddress): static { $this->deliveryAddress = $deliveryAddress; return $this; }
 
     /**
      * @see UserInterface
@@ -111,5 +120,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    // To hash the password before set it in DB 
+    #[Assert\NotBlank(message: 'Le mot de passe est obligatoire')]
+    private ?string $plainPassword = null;
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): static
+    {
+        $this->plainPassword = $plainPassword;
+        return $this;
     }
 }
