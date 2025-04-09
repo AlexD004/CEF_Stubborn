@@ -9,6 +9,15 @@
 </style>
 
 <div class="wrapper">
-    <h1>DASHBOARD</h1>
+    <h1>Tableau de bord</h1>
+
+    <h2>Ajouter un produit</h2>
+
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.price) }}
+        {{ form_row(form.image) }}
+        <button class="btn btn-primary">Ajouter</button>
+    {{ form_end(form) }}
 </div>
 {% endblock %}
