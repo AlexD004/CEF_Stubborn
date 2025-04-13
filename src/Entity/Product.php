@@ -23,6 +23,9 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $isFeatured = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +64,17 @@ class Product
     {
         $this->image = $image;
 
+        return $this;
+    }
+
+    public function getIsFeatured(): bool
+    {
+        return $this->isFeatured;
+    }
+
+    public function setIsFeatured(bool $isFeatured): self
+    {
+        $this->isFeatured = $isFeatured;
         return $this;
     }
 }

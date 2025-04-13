@@ -19,5 +19,24 @@
         {{ form_row(form.image) }}
         <button class="btn btn-primary">Ajouter</button>
     {{ form_end(form) }}
+
+    <h2>Modifier ou supprimer un produit</h2>
+
+    {% for product in products %}
+        <div class="product-admin-form">
+            <h3>{{ product.name }}</h3>
+            <img src="{{ asset('uploads/' ~ product.image) }}" width="100">
+            
+            {{ form_start(editForms[product.id]) }}
+                {{ form_widget(editForms[product.id]) }}
+                <button type="submit">Modifier</button>
+            {{ form_end(editForms[product.id]) }}
+
+            <form method="post" action="{{ path('product_delete', {'id': product.id}) }}" onsubmit="return confirm('Supprimer ce produit ?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+            </form>
+        </div>
+    {% endfor %}
 </div>
 {% endblock %}
