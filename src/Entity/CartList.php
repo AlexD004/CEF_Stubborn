@@ -6,6 +6,7 @@ use App\Repository\CartListRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CartListRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class CartList
 {
     #[ORM\Id]

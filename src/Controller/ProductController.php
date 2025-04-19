@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Form\CartAddType;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class ProductController extends AbstractController
@@ -127,10 +128,15 @@ final class ProductController extends AbstractController
 
     // GET one product by ID
     #[Route('/product/{id}', name: 'product_details')]
-    public function productDetails(Product $product): Response
+    public function productDetails(Product $product, Request $request): Response
     {
+        $form = $this->createForm(CartAddType::class, null, [
+            'action' => $this->generateUrl('cart_add', ['id' => $product->getId()])
+        ]);
+
         return $this->render('product/details.html.twig', [
-            'product' => $product
+            'product' => $product,
+            'form' => $form->createView()
         ]);
     }
 

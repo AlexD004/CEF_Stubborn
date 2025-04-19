@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier{% endblock %}
+
+{% block body %}
+    <h1>Mon Panier</h1>
+
+    {% if cartItems is empty %}
+        <p>Votre panier est vide.</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Taille</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cartItems %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>
+                            <!-- Formulaire pour changer la taille -->
+                            <form method="post" action="{{ path('cart_update', {id: item.id}) }}">
+                                <select name="size">
+                                    <option value="S" {% if item.size == 'S' %}selected{% endif %}>S</option>
+                                    <option value="M" {% if item.size == 'M' %}selected{% endif %}>M</option>
+                                    <option value="L" {% if item.size == 'L' %}selected{% endif %}>L</option>
+                                    <option value="XL" {% if item.size == 'XL' %}selected{% endif %}>XL</option>
+                                    <!-- Ajoute ici d'autres tailles si nécessaire -->
+                                </select>
+                        </td>
+                        <td>
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" />
+                        </td>
+                        <td>{{ item.product.price|number_format(2, ',', ' ') }} €</td>
+                        <td>{{ (item.product.price * item.quantity)|number_format(2, ',', ' ') }} €</td>
+                        <td>
+                            <input type="hidden" name="_token" value="{{ csrf_token('update' ~ item.id) }}">
+                            <button type="submit">Mettre à jour</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="{{ path('cart_remove', {id: item.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+                                <button type="submit">🗑️ Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Total du panier : {{ total|number_format(2, ',', ' ') }} €</h3>
+    {% endif %}
+{% endblock %}
