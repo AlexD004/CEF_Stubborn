@@ -15,5 +15,21 @@
         {% if product.isFeatured %}
             <span >À la une</span>
         {% endif %}
+
+        <form method="POST" action="{{ path('cart_add', {id: product.id}) }}">
+            {{ form_start(form) }}
+                <div>
+                    {{ form_row(form.size) }}
+                </div>
+                <div>
+                    {{ form_row(form.quantity) }}
+                </div>
+                <div>
+                    <button type="submit">Ajouter au panier</button>
+                </div>
+            {{ form_end(form) }}
+        </form>
+
+
     </div>
 {% endblock %}
