@@ -57,4 +57,9 @@
 
         <h3>Total du panier : {{ total|number_format(2, ',', ' ') }} €</h3>
     {% endif %}
+
+    <form method="post" action="{{ path('cart_checkout') }}">
+        <button type="submit" class="btn btn-success">💳 Commander</button>
+    </form>
+
 {% endblock %}
