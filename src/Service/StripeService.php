@@ -6,7 +6,6 @@ use Stripe\Stripe;
 use Stripe\Checkout\Session as StripeSession;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-
 class StripeService
 {
     private string $stripeSecretKey;
@@ -37,12 +36,15 @@ class StripeService
             ];
         }
 
+        $successUrl = $this->router->generate('checkout_success', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $cancelUrl = $this->router->generate('cart_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
         return StripeSession::create([
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => $this->router->generate('checkout_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            'cancel_url' => $this->router->generate('cart_index', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'success_url' => $successUrl,
+            'cancel_url' => $cancelUrl,
         ]);
     }
 }
