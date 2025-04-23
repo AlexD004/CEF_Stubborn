@@ -32,7 +32,7 @@ In 📂 www, create a new folder named Stubborn
 The new path is 📂 C: --> 📂 wamp64 --> 📂 www --> 📂 Stubborn
 
 c. Place files
-You can now place all downloaded files into the folder 📂 Stubborn
+You can now place all content of 'CEF_Stubborn-main' folder that you just downloaded into the folder 📂 Stubborn
 
 3. Upload the database
 
