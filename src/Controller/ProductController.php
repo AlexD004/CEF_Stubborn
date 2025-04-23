@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 final class ProductController extends AbstractController
 {
 
-    #[Route('/admin', name: 'product_add')]
+    #[Route('/admin', name: 'dashboard')]
     public function add(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
         $product = new Product();
@@ -79,41 +79,41 @@ final class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $imageFile = $form->get('image')->getData();
-            if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
 
-                try {
-                    $imageFile->move(
-                        $this->getParameter('uploads_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    $this->addFlash('error', 'Erreur lors de l\'upload du fichier.');
+            $action = $request->request->get('action');
+
+            if ($action === 'edit') {
+                $imageFile = $form->get('image')->getData();
+                if ($imageFile) {
+                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                    try {
+                        $imageFile->move(
+                            $this->getParameter('uploads_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        $this->addFlash('error', 'Erreur lors de l\'upload du fichier.');
+                    }
+
+                    $product->setImage($newFilename);
                 }
 
-                $product->setImage($newFilename);
-            }
+                $em->flush();
+                $this->addFlash('success', 'Produit modifié !');
 
-            $em->flush();
-            $this->addFlash('success', 'Produit modifié !');
+            } elseif ($action === 'delete') {
+                $em->remove($product);
+                $em->flush();
+                $this->addFlash('success', 'Produit supprimé !');
+            }
         }
 
         return $this->redirectToRoute('product_add');
     }
 
-    // DELETE a product
-    #[Route('/admin/product/{id}/delete', name: 'product_delete', methods: ['POST'])]
-    public function delete(Product $product, EntityManagerInterface $em): Response
-    {
-        $em->remove($product);
-        $em->flush();
-
-        $this->addFlash('success', 'Produit supprimé !');
-        return $this->redirectToRoute('product_add');
-    }
 
     // GET featured products
     #[Route('/_fragment/produits-a-la-une', name: 'products_featured_fragment')]

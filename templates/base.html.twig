@@ -11,19 +11,24 @@
         <div id="header">
             <div class="wrapper">
                 <div class="brand">
-                    <img src="{{ asset('images/Logo.png') }}" alt="Logo Stubborn">
+                    <a href="{{ path('homepage') }}"><img src="{{ asset('images/Logo.png') }}" alt="Logo Stubborn"></a>
                     <p>Don't compromise on your look</p>
                 </div>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <h1>Back-Office</h1>
+                {% endif %}
                 <nav>
                     <ul>
-                        <li class="{{ app.request.attributes.get('_route') == 'homepage' ? 'active' : '' }}"><a href="{{ path('homepage') }}">Accueil</a></li>
-
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="{{ app.request.attributes.get('_route') == 'dashboard' ? 'active' : '' }}"><a href="{{ path('dashboard') }}">Tableau de bord</a></li>
+                        {% else %}
+                            <li class="{{ app.request.attributes.get('_route') == 'homepage' ? 'active' : '' }}"><a href="{{ path('homepage') }}">Accueil</a></li>
+                        {% endif %}
                         {% if app.user %}
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <li class="{{ app.request.attributes.get('_route') == 'product_add' ? 'active' : '' }}"><a href="{{ path('product_add') }}">Tableau de bord</a></li>
-                            {% endif %}
                             <li class="{{ app.request.attributes.get('_route') == 'products_all' ? 'active' : '' }}"><a href="{{ path('products_all') }}">Boutique</a></li>
-                            <li class="{{ app.request.attributes.get('_route') == 'cart_index' ? 'active' : '' }}"><a href="{{ path('cart_index') }}">Panier</a></li>
+                            {% if not is_granted('ROLE_ADMIN') %}
+                                <li class="{{ app.request.attributes.get('_route') == 'cart_index' ? 'active' : '' }}"><a href="{{ path('cart_index') }}">Panier</a></li>
+                            {% endif %}
                             <li class="logout {{ app.request.attributes.get('_route') == 'app_logout' ? 'active' : '' }}"><a href="{{ path('app_logout') }}">Se déconnecter</a></li>
                         {% else %}
                             <li class="{{ app.request.attributes.get('_route') == 'app_register' ? 'active' : '' }}"><a href="{{ path('app_register') }}">S'inscrire</a></li>
@@ -36,16 +41,16 @@
         <div class="wrapper">
             {% block body %}{% endblock %}
         </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@7.0.0/dist/turbo.min.js"></script>
-        {% block javascripts %} 
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
         <footer>
             <div class="wrapper">
                 <p> Adresse : Piccadilly Circus, London W1J 0DA, Royaume-Uni</p>
                 <p>Adresse de contact : stubborn@blabla.com</p>
             </div>
         </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@7.0.0/dist/turbo.min.js"></script>
+        {% block javascripts %} 
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
     </body>
 </html>

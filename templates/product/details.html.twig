@@ -3,33 +3,39 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block body %}
+
     <div class="product-details">
-        <h1>{{ product.name }}</h1>
 
         {% if product.image %}
-            <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}">
+            <div class="product-detail-media">
+                <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}">
+            </div>
         {% endif %}
 
-        <p>Prix : {{ product.price }} €</p>
-
-        {% if product.isFeatured %}
-            <span >À la une</span>
-        {% endif %}
-
-        <form method="POST" action="{{ path('cart_add', {id: product.id}) }}">
-            {{ form_start(form) }}
-                <div>
-                    {{ form_row(form.size) }}
+        <div class="product-details-content">
+            <div class="product-details-elements">
+                <div class="product-details-infos">
+                    <h3>{{ product.name }}</h3>
+                    <p>Prix : {{ product.price }} €</p>
                 </div>
-                <div>
-                    {{ form_row(form.quantity) }}
+                <div class="product-details-choices">
+                    <form id="addCartForm" method="POST" action="{{ path('cart_add', {id: product.id}) }}">
+                        {{ form_start(form) }}
+                            <div>
+                                {{ form_row(form.size) }}
+                            </div>
+                            <div>
+                                {{ form_row(form.quantity) }}
+                            </div>
+                        {{ form_end(form) }}
+                    </form>
                 </div>
-                <div>
-                    <button type="submit">Ajouter au panier</button>
-                </div>
-            {{ form_end(form) }}
-        </form>
-
-
+            </div>
+            <div class="product-details-actions">
+                <button class="btn" type="submit" form="addCartForm">Ajouter au panier</button>
+            </div>
+        </div>
+        
     </div>
+
 {% endblock %}

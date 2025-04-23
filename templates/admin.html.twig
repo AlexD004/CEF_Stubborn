@@ -4,34 +4,58 @@
 
 {% block body %}
 
-    <h1>Tableau de bord</h1>
-
-    <h2>Ajouter un produit</h2>
-
-    {{ form_start(form) }}
-        {{ form_row(form.name) }}
-        {{ form_row(form.price) }}
-        {{ form_row(form.image) }}
-        <button class="btn btn-primary">Ajouter</button>
-    {{ form_end(form) }}
-
-    <h2>Modifier ou supprimer un produit</h2>
-
-    {% for product in products %}
-        <div class="product-admin-form">
-            <h3>{{ product.name }}</h3>
-            <img src="{{ asset('uploads/' ~ product.image) }}" width="100">
-            
-            {{ form_start(editForms[product.id]) }}
-                {{ form_widget(editForms[product.id]) }}
-                <button type="submit">Modifier</button>
-            {{ form_end(editForms[product.id]) }}
-
-            <form method="post" action="{{ path('product_delete', {'id': product.id}) }}" onsubmit="return confirm('Supprimer ce produit ?');">
-                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
-                <button type="submit" class="btn btn-danger">Supprimer</button>
-            </form>
-        </div>
-    {% endfor %}
+    <section class="add-product-section">
+        <h2>Ajouter un produit</h2>
+        {{ form_start(form, {'attr': {'class': 'add-product-form'}}) }}
+            <div class="form-media">
+                {{ form_row(form.image) }}
+            </div>
+            <div class="form-details">
+                <div class="form-infos">
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.price) }}
+                    {{ form_row(form.stockXS) }}
+                    {{ form_row(form.stockS) }} 
+                    {{ form_row(form.stockM) }}
+                    {{ form_row(form.stockL) }}
+                    {{ form_row(form.stockXL) }}
+                </div>
+                <div class="form-actions"> 
+                    {{ form_row(form.isFeatured, {'attr': {'class': 'is-featured'}}) }}
+                    <button class="btn secondary">Ajouter</button>
+                </div>
+            </div>
+        {{ form_end(form) }}
+    </section>
+    <section class="update-product-section">
+        <h2>Modifier ou supprimer un produit</h2>
+        
+        {% for product in products %}
+            <div class="product-admin-form">
+                {{ form_start(editForms[product.id]) }}
+                    <div class="form-media">
+                        <img src="{{ asset('uploads/' ~ product.image) }}" width="100">
+                        {{ form_row(editForms[product.id].image) }}
+                    </div>
+                    <div class="form-details">
+                        <div class="form-infos">
+                            {{ form_row(editForms[product.id].name) }}
+                            {{ form_row(editForms[product.id].price) }}
+                            {{ form_row(editForms[product.id].stockXS) }}
+                            {{ form_row(editForms[product.id].stockS) }}
+                            {{ form_row(editForms[product.id].stockM) }}
+                            {{ form_row(editForms[product.id].stockL) }}
+                            {{ form_row(editForms[product.id].stockXL) }}
+                        </div>
+                        <div class="form-actions"> 
+                            {{ form_row(editForms[product.id].isFeatured, {'attr': {'class': 'is-featured'}}) }}
+                            <button type="submit" name="action" value="delete" class="btn btnDelete" onclick="return confirm('Supprimer ce produit ?');">Supprimer</button>
+                            <button type="submit" name="action" value="edit" class="btn secondary">Modifier</button>
+                        </div>
+                    </div>
+                {{ form_end(editForms[product.id]) }}
+            </div>
+        {% endfor %}
+    </section>
 
 {% endblock %}
