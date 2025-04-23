@@ -3,30 +3,39 @@
 {% block title %}Tous les produits{% endblock %}
 
 {% block body %}
-    <form method="get" action="{{ path('products_all') }}">
-        <label for="price">Filtrer par prix</label>
-        <select name="price" id="price">
-            <option value="low" {% if currentFilter == 'low' %}selected{% endif %}>10 à 30€</option>
-            <option value="mid" {% if currentFilter == 'mid' %}selected{% endif %}>30 à 35€</option>
-            <option value="high" {% if currentFilter == 'high' %}selected{% endif %}>35 à 50€</option>
-            <option value="all" {% if currentFilter == 'all' %}selected{% endif %}>Tous les produits</option>
-        </select>
-        <button type="submit">Filtrer</button>
-    </form>
-
+ 
     <div class="product-grid">
+    
+        <div class="product-card filter-card">
+            <form method="get" action="{{ path('products_all') }}">
+                <label for="price">Filtrer par prix</label>
+                <select name="price" id="price">
+                    <option value="low" {% if currentFilter == 'low' %}selected{% endif %}>10 à 30€</option>
+                    <option value="mid" {% if currentFilter == 'mid' %}selected{% endif %}>30 à 35€</option>
+                    <option value="high" {% if currentFilter == 'high' %}selected{% endif %}>35 à 50€</option>
+                    <option value="all" {% if currentFilter == 'all' %}selected{% endif %}>Tous les produits</option>
+                </select>
+                <button class="btn" type="submit">Filtrer</button>
+            </form>
+        </div>
+
         {% for product in products %}
             <div class="product-card">
                 {% if product.image %}
                     <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}">
                 {% endif %}
-                <h3>{{ product.name }}</h3>
-                <p>{{ product.price }} €</p>
-                {% if app.user %}
-                    <a href="{{ path('product_details', { id: product.id }) }}">
-                        Voir plus
-                    </a>
-                {% endif %}
+                
+                <div class="product-card-actions">
+                    <div class="product-card-infos">
+                        <h3>{{ product.name }}</h3>
+                        <p>{{ product.price }} €</p>
+                    </div>
+                    {% if app.user %}
+                        <a class="more-infos" href="{{ path('product_details', { id: product.id }) }}">
+                            Voir plus
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         {% else %}
             <p>Aucun produit à la une actuellement.</p>

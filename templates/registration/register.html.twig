@@ -3,23 +3,38 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
 
-    <h1>S'inscrire</h1>
+    <div class="wrapper-form-auth">
 
-    {{ form_errors(registrationForm) }}
+        {% for flash_error in app.flashes('verify_email_error') %}
+            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        {% endfor %}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.name) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.deliveryAddress) }}
+        <p class="form-title">S'inscrire</p>
+        <div class="auth-form register-form">  
 
-        <button type="submit" class="btn">S'inscrire</button>
-    {{ form_end(registrationForm) }}
-    <a href="{{ path('app_login') }}">Déjà inscrit ?</a>
+            {{ form_errors(registrationForm) }}
+
+            {{ form_start(registrationForm) }}
+                {{ form_row(registrationForm.name) }}
+                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.deliveryAddress) }}
+                <div class="password-fields">
+                    {{ form_row(registrationForm.plainPassword, {
+                        label: 'Mot de passe'
+                    }) }}
+                </div>
+
+                <button type="submit" class="btn">S'inscrire</button>
+            {{ form_end(registrationForm) }}
+
+        </div>
+        <div class="auth-other-form">
+            Déjà inscrit ?
+            <a href="{{ path('app_login') }}">
+                <button class="btn secondary">Se connecter</button>
+            </a>
+        </div>
+
+    </div>
 {% endblock %}

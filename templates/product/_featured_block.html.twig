@@ -9,7 +9,7 @@
                     <div class="product-card-infos">
                         <h3>{{ product.name }}</h3>
                         <p>{{ product.price }} €</p>
-                    </div>
+                    </div> 
                     {% if app.user %}
                         <a class="more-infos" href="{{ path('product_details', { id: product.id }) }}">
                             Voir plus
