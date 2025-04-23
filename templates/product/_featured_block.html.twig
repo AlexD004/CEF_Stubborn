@@ -1,18 +1,21 @@
 <section class="featured-home">
-    <h2>Nos produits à la une</h2>
     <div class="product-grid">
         {% for product in products %}
             <div class="product-card">
                 {% if product.image %}
                     <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}">
                 {% endif %}
-                <h3>{{ product.name }}</h3>
-                <p>{{ product.price }} €</p>
-                {% if app.user %}
-                    <a href="{{ path('product_details', { id: product.id }) }}">
-                        Voir plus
-                    </a>
-                {% endif %}
+                <div class="product-card-actions">
+                    <div class="product-card-infos">
+                        <h3>{{ product.name }}</h3>
+                        <p>{{ product.price }} €</p>
+                    </div>
+                    {% if app.user %}
+                        <a class="more-infos" href="{{ path('product_details', { id: product.id }) }}">
+                            Voir plus
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         {% else %}
             <p>Aucun produit à la une actuellement.</p>
