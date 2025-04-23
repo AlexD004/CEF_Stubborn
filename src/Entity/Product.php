@@ -26,6 +26,21 @@ class Product
     #[ORM\Column(type: 'boolean')]
     private bool $isFeatured = false;
 
+    #[ORM\Column(type: 'integer')]
+    private $stockXS;
+
+    #[ORM\Column(type: 'integer')]
+    private $stockS;
+
+    #[ORM\Column(type: 'integer')]
+    private $stockM;
+
+    #[ORM\Column(type: 'integer')]
+    private $stockL;
+
+    #[ORM\Column(type: 'integer')]
+    private $stockXL;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +90,71 @@ class Product
     public function setIsFeatured(bool $isFeatured): self
     {
         $this->isFeatured = $isFeatured;
+        return $this;
+    }
+
+    public function isFeatured(): ?bool
+    {
+        return $this->isFeatured;
+    }
+
+    public function getStockXS(): ?int
+    {
+        return $this->stockXS;
+    }
+
+    public function setStockXS(int $stockXS): static
+    {
+        $this->stockXS = $stockXS;
+
+        return $this;
+    }
+
+    public function getStockS(): ?int
+    {
+        return $this->stockS;
+    }
+
+    public function setStockS(int $stockS): static
+    {
+        $this->stockS = $stockS;
+
+        return $this;
+    }
+
+    public function getStockM(): ?int
+    {
+        return $this->stockM;
+    }
+
+    public function setStockM(int $stockM): static
+    {
+        $this->stockM = $stockM;
+
+        return $this;
+    }
+
+    public function getStockL(): ?int
+    {
+        return $this->stockL;
+    }
+
+    public function setStockL(int $stockL): static
+    {
+        $this->stockL = $stockL;
+
+        return $this;
+    }
+
+    public function getStockXL(): ?int
+    {
+        return $this->stockXL;
+    }
+
+    public function setStockXL(int $stockXL): static
+    {
+        $this->stockXL = $stockXL;
+
         return $this;
     }
 }

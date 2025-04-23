@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Validator\Constraints\File;
 
 class ProductType extends AbstractType
@@ -38,6 +39,51 @@ class ProductType extends AbstractType
                 'required' => false,
                 'mapped' => true,
                 'attr' => ['class' => 'custom-checkbox']
+            ])
+            ->add('stockXS', IntegerType::class, [
+                'label' => 'Stock XS',
+                'required' => false,
+                'mapped' => true,
+                'attr' => [
+                    'min' => 0,
+                    'class' => 'form-stock'
+                ]
+            ])
+            ->add('stockS', IntegerType::class, [
+                'label' => 'Stock S',
+                'required' => false,
+                'mapped' => true,
+                'attr' => [
+                    'min' => 0,
+                    'class' => 'form-stock'
+                ]
+            ])
+            ->add('stockM', IntegerType::class, [
+                'label' => 'Stock M',
+                'required' => false,
+                'mapped' => true,
+                'attr' => [
+                    'min' => 0,
+                    'class' => 'form-stock'
+                ]
+            ])
+            ->add('stockL', IntegerType::class, [
+                'label' => 'Stock L',
+                'required' => false,
+                'mapped' => true,
+                'attr' => [
+                    'min' => 0,
+                    'class' => 'form-stock'
+                ]
+            ])
+            ->add('stockXL', IntegerType::class, [
+                'label' => 'Stock XL',
+                'required' => false,
+                'mapped' => true,
+                'attr' => [
+                    'min' => 0,
+                    'class' => 'form-stock'
+                ]
             ])
         ;
     }
